@@ -1,4 +1,4 @@
-View app here: https://brave-perlman-7d7345.netlify.app
+View app here: https://weather-janah.netlify.app
 
 
 
