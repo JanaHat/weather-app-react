@@ -9,10 +9,11 @@ function App() {
 
     const [query, setQuery] = useState('');
     const [weather, setWeather] = useState({});
+    const [error, setError] = useState('');
 
     const search = event => {
         event.preventDefault();
-        if(query !== '') {
+        if(query !== '' || query === weather.main) {
         fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
             .then(res => res.json())
             .then(result => {
@@ -20,7 +21,7 @@ function App() {
                 setQuery('');
             });
         } else {
-            alert('Please enter a city name!')
+            setError('Please enter a valid city name')
         }
     }
 
@@ -37,6 +38,10 @@ function App() {
 
         return `${day}, ${date} ${month} ${year}`
     }
+
+   
+
+    
 
     return (
         <div className="app">
@@ -61,7 +66,7 @@ function App() {
                         </button>
                     </div>
                 </div>
-                {(typeof weather.main != "undefined") ? (
+                {(typeof weather.main !== 'undefined' || weather.main === query) ? (
                     <div className="loc-weather-box">
                         
                         <div className="location-box">
@@ -74,11 +79,12 @@ function App() {
                             <p className="real-feel"><span>Feels like:</span>{Math.round(weather.main.feels_like)}&deg;C</p>
                             <p className="humidity"><span>Humidity:</span>{weather.main.humidity}</p>
                             <p className="weather"><span>Weather:</span>{weather.weather[0].description}</p>
+                            
                         </div>
                     </div>
                 ) : (
                     <div className="valid-city">
-                        <h4>Please enter a valid city name...</h4>
+                        <p>{error}</p>
                     </div>
                 )}
             </main>
